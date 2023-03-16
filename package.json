@@ -1,5 +1,5 @@
 {
-	"name": "nscloud-action",
+	"name": "nscloud-cluster-action",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -20,7 +20,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/namespacelabs/nscloud-action.git"
+		"url": "git+https://github.com/namespacelabs/nscloud-cluster-action.git"
 	},
 	"keywords": [],
 	"author": "",
