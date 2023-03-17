@@ -20,7 +20,7 @@ jobs:
       - name: Install and configure Namespace Cloud CLI
         uses: namespacelabs/nscloud-setup@v0.0.1
       - name: Create a Namespace Cloud cluster
-        uses: namespacelabs/nscloud-cluster-action@v0.0.5
+        uses: namespacelabs/nscloud-cluster-action@v0.0.2
       - name: Apply configurations
         run: |
           kubectl apply -f foo/bar.yaml
