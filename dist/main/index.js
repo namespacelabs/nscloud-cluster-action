@@ -4364,13 +4364,17 @@ function prepareCluster() {
         try {
             // Start downloading kubectl while we prepare the cluster.
             const kubectlDir = downloadKubectl();
-            yield ensureFreshTenantToken();
             const registryFile = tmpFile("registry.txt");
-            const cluster = yield createCluster(registryFile);
+            const cluster = yield core.group(`Create Namespace Cloud cluster`, () => main_awaiter(this, void 0, void 0, function* () {
+                yield ensureFreshTenantToken();
+                return yield createCluster(registryFile);
+            }));
             core.saveState(ClusterIdKey, cluster.cluster_id);
-            const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
-            core.exportVariable("KUBECONFIG", kubeConfig);
-            core.addPath(yield kubectlDir);
+            yield core.group(`Configure kubectl`, () => main_awaiter(this, void 0, void 0, function* () {
+                const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
+                core.exportVariable("KUBECONFIG", kubeConfig);
+                core.addPath(yield kubectlDir);
+            }));
             const registry = external_fs_.readFileSync(registryFile, "utf8");
             yield core.group(`Registry address`, () => main_awaiter(this, void 0, void 0, function* () {
                 core.info(registry);

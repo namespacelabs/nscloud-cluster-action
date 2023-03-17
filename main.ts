@@ -22,17 +22,20 @@ async function prepareCluster(): Promise<void> {
 		// Start downloading kubectl while we prepare the cluster.
 		const kubectlDir = downloadKubectl();
 
-		await ensureFreshTenantToken();
-
 		const registryFile = tmpFile("registry.txt");
-		const cluster = await createCluster(registryFile);
+		const cluster = await core.group(`Create Namespace Cloud cluster`, async () => {
+			await ensureFreshTenantToken();
 
+			return await createCluster(registryFile);
+		});
 		core.saveState(ClusterIdKey, cluster.cluster_id);
 
-		const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
-		core.exportVariable("KUBECONFIG", kubeConfig);
+		await core.group(`Configure kubectl`, async () => {
+			const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
+			core.exportVariable("KUBECONFIG", kubeConfig);
 
-		core.addPath(await kubectlDir);
+			core.addPath(await kubectlDir);
+		});
 
 		const registry = fs.readFileSync(registryFile, "utf8");
 		await core.group(`Registry address`, async () => {
