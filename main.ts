@@ -43,7 +43,9 @@ async function prepareCluster(): Promise<void> {
 			core.setOutput("registry-address", registry);
 		});
 
-		console.log(`Successfully created an nscloud cluster.
+		// New line to separate from groups.
+		core.info(`
+Successfully created an nscloud cluster.
 \`kubectl\` has been installed and preconfigured.
 
 You can find logs and jump into SSH at ${cluster.app_url}
