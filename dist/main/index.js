@@ -4327,7 +4327,7 @@ function tmpFile(file) {
 }
 function ensureFreshTenantToken() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec("nsc auth exchange-github-token");
+        yield exec.exec("nsc auth exchange-github-token --ensure=5m");
     });
 }
 
@@ -4355,7 +4355,7 @@ function run() {
 
 Please add a step this step to your workflow's job definition:
 
-- uses: namespacelabs/nscloud-setup@v0.0.1`);
+- uses: namespacelabs/nscloud-setup@v0.0.3`);
         });
     });
 }
@@ -4364,16 +4364,25 @@ function prepareCluster() {
         try {
             // Start downloading kubectl while we prepare the cluster.
             const kubectlDir = downloadKubectl();
-            yield ensureFreshTenantToken();
             const registryFile = tmpFile("registry.txt");
-            const cluster = yield createCluster(registryFile);
+            const cluster = yield core.group(`Create Namespace Cloud cluster`, () => main_awaiter(this, void 0, void 0, function* () {
+                yield ensureFreshTenantToken();
+                return yield createCluster(registryFile);
+            }));
             core.saveState(ClusterIdKey, cluster.cluster_id);
-            const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
-            core.exportVariable("KUBECONFIG", kubeConfig);
-            core.addPath(yield kubectlDir);
+            yield core.group(`Configure kubectl`, () => main_awaiter(this, void 0, void 0, function* () {
+                const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
+                core.exportVariable("KUBECONFIG", kubeConfig);
+                core.addPath(yield kubectlDir);
+            }));
             const registry = external_fs_.readFileSync(registryFile, "utf8");
-            core.setOutput("registry-address", registry);
-            console.log(`Successfully created an nscloud cluster.
+            yield core.group(`Registry address`, () => main_awaiter(this, void 0, void 0, function* () {
+                core.info(registry);
+                core.setOutput("registry-address", registry);
+            }));
+            // New line to separate from groups.
+            core.info(`
+Successfully created an nscloud cluster.
 \`kubectl\` has been installed and preconfigured.
 
 You can find logs and jump into SSH at ${cluster.app_url}

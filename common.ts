@@ -15,5 +15,5 @@ export function tmpFile(file: string): string {
 }
 
 export async function ensureFreshTenantToken() {
-	await exec.exec("nsc auth exchange-github-token");
+	await exec.exec("nsc auth exchange-github-token --ensure=5m");
 }

@@ -4154,7 +4154,7 @@ function tmpFile(file) {
 }
 function ensureFreshTenantToken() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec("nsc auth exchange-github-token");
+        yield exec.exec("nsc auth exchange-github-token --ensure=5m");
     });
 }
 
