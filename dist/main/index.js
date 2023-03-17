@@ -4327,7 +4327,7 @@ function tmpFile(file) {
 }
 function ensureFreshTenantToken() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec("nsc auth exchange-github-token");
+        yield exec.exec("nsc auth exchange-github-token --ensure=5m");
     });
 }
 
@@ -4355,7 +4355,7 @@ function run() {
 
 Please add a step this step to your workflow's job definition:
 
-- uses: namespacelabs/nscloud-setup@v0.0.1`);
+- uses: namespacelabs/nscloud-setup@v0.0.3`);
         });
     });
 }
@@ -4372,7 +4372,10 @@ function prepareCluster() {
             core.exportVariable("KUBECONFIG", kubeConfig);
             core.addPath(yield kubectlDir);
             const registry = external_fs_.readFileSync(registryFile, "utf8");
-            core.setOutput("registry-address", registry);
+            yield core.group(`Registry address`, () => main_awaiter(this, void 0, void 0, function* () {
+                core.info(registry);
+                core.setOutput("registry-address", registry);
+            }));
             console.log(`Successfully created an nscloud cluster.
 \`kubectl\` has been installed and preconfigured.
 

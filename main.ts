@@ -13,7 +13,7 @@ async function run(): Promise<void> {
 
 Please add a step this step to your workflow's job definition:
 
-- uses: namespacelabs/nscloud-setup@v0.0.1`);
+- uses: namespacelabs/nscloud-setup@v0.0.3`);
 		});
 }
 
@@ -35,7 +35,10 @@ async function prepareCluster(): Promise<void> {
 		core.addPath(await kubectlDir);
 
 		const registry = fs.readFileSync(registryFile, "utf8");
-		core.setOutput("registry-address", registry);
+		await core.group(`Registry address`, async () => {
+			core.info(registry);
+			core.setOutput("registry-address", registry);
+		});
 
 		console.log(`Successfully created an nscloud cluster.
 \`kubectl\` has been installed and preconfigured.

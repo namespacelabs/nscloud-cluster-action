@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import * as path from "path";
 import * as fs from "fs";
 import * as exec from "@actions/exec";
@@ -15,5 +16,5 @@ export function tmpFile(file: string): string {
 }
 
 export async function ensureFreshTenantToken() {
-	await exec.exec("nsc auth exchange-github-token");
+	await exec.exec("nsc auth exchange-github-token --ensure=5m");
 }
