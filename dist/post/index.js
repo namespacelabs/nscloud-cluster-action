@@ -4179,7 +4179,7 @@ function run() {
                 // Re-auth in case the previous token has expired.
                 yield ensureFreshTenantToken();
                 // TODO print instructions how to revive it once release is suspend by default
-                yield exec.exec(`nsc cluster release ${clusterId}`);
+                yield exec.exec(`nsc cluster internal release ${clusterId}`);
             }
         }
         catch (error) {

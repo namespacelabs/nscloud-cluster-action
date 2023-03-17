@@ -11,7 +11,7 @@ async function run(): Promise<void> {
 			await ensureFreshTenantToken();
 
 			// TODO print instructions how to revive it once release is suspend by default
-			await exec.exec(`nsc cluster release ${clusterId}`);
+			await exec.exec(`nsc cluster internal release ${clusterId}`);
 		}
 	} catch (error) {
 		core.setFailed(error.message);
