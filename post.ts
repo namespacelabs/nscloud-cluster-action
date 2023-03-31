@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import { ClusterIdKey, ensureFreshTenantToken } from "./common";
+import { ClusterIdKey, ensureNscloudToken } from "./common";
 
 async function run(): Promise<void> {
 	try {
@@ -8,7 +8,7 @@ async function run(): Promise<void> {
 
 		if (clusterId != "" && core.getInput("preview") != "true") {
 			// Re-auth in case the previous token has expired.
-			await ensureFreshTenantToken();
+			await ensureNscloudToken();
 
 			// TODO print instructions how to revive it once release is suspend by default
 			await exec.exec(`nsc cluster internal release ${clusterId}`);
