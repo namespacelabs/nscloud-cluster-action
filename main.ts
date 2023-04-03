@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as fs from "fs";
 import * as exec from "@actions/exec";
-import { ClusterIdKey, ensureFreshTenantToken, tmpFile } from "./common";
+import { ClusterIdKey, ensureNscloudToken, tmpFile } from "./common";
 
 async function run(): Promise<void> {
 	var commandExists = require("command-exists");
@@ -24,7 +24,7 @@ async function prepareCluster(): Promise<void> {
 
 		const registryFile = tmpFile("registry.txt");
 		const cluster = await core.group(`Create Namespace Cloud cluster`, async () => {
-			await ensureFreshTenantToken();
+			await ensureNscloudToken();
 
 			return await createCluster(registryFile);
 		});
