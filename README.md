@@ -18,9 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install and configure Namespace Cloud CLI
-        uses: namespacelabs/nscloud-setup@v0.0.3
+        uses: namespacelabs/nscloud-setup@v0.0.4
       - name: Create a Namespace Cloud cluster
-        uses: namespacelabs/nscloud-cluster-action@v0.0.2
+        uses: namespacelabs/nscloud-cluster-action@v0.0.3
       - name: Apply configurations
         run: |
           kubectl apply -f foo/bar.yaml
