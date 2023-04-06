@@ -4328,10 +4328,9 @@ function tmpFile(file) {
 }
 function ensureNscloudToken() {
     return __awaiter(this, void 0, void 0, function* () {
-        const tokenSpecFile = "/var/run/nsc/token.spec";
-        if (external_fs_.existsSync(tokenSpecFile)) {
-            const tokenSpec = external_fs_.readFileSync(tokenSpecFile, "utf8");
-            core.exportVariable("NSC_TOKEN_SPEC", tokenSpec);
+        const tokenFile = "/var/run/nsc/token.json";
+        if (external_fs_.existsSync(tokenFile)) {
+            core.exportVariable("NSC_TOKEN_FILE", tokenFile);
             return;
         }
         // We only need a valid token when opening the proxy
