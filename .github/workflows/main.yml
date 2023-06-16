@@ -7,7 +7,11 @@ permissions:
 
 jobs:
   run_nscloud_action:
-    runs-on: nscloud-ubuntu-22.04-amd64-2x8
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, nscloud-ubuntu-22.04-amd64-2x8]
+    runs-on: ${{ matrix.os }}
     name: Deploy a sample application to Namespace Cloud
     steps:
       - name: Checkout
