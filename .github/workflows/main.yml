@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   run_nscloud_action:
-    runs-on: ubuntu-latest
+    runs-on: nscloud-ubuntu-22.04-amd64-2x8
     name: Deploy a sample application to Namespace Cloud
     steps:
       - name: Checkout
