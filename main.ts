@@ -80,18 +80,14 @@ interface Cluster {
 }
 
 async function createCluster(registryFile: string): Promise<Cluster> {
-	const out = tmpFile("cluster_metadata.txt");
+	let cmd = `nsc cluster create -o json --output_registry_to=${registryFile}`;
 
-	let cmd = `nsc cluster create --output_json_to=${out} --output_registry_to=${registryFile}`;
-	if (core.getInput("preview") != "true") {
-		cmd = cmd + " --ephemeral";
-	}
 	if (core.getInput("wait-kube-system") == "true") {
 		cmd = cmd + " --wait_kube_system";
 	}
-	await exec.exec(cmd);
+	const out = await exec.getExecOutput(cmd);
 
-	return JSON.parse(fs.readFileSync(out, "utf8"));
+	return JSON.parse(out.stdout);
 }
 
 run();
