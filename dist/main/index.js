@@ -4419,16 +4419,12 @@ function downloadKubectl() {
 }
 function createCluster(registryFile) {
     return main_awaiter(this, void 0, void 0, function* () {
-        const out = tmpFile("cluster_metadata.txt");
-        let cmd = `nsc cluster create --output_json_to=${out} --output_registry_to=${registryFile}`;
-        if (core.getInput("preview") != "true") {
-            cmd = cmd + " --ephemeral";
-        }
+        let cmd = `nsc cluster create -o json --output_registry_to=${registryFile}`;
         if (core.getInput("wait-kube-system") == "true") {
             cmd = cmd + " --wait_kube_system";
         }
-        yield exec.exec(cmd);
-        return JSON.parse(external_fs_.readFileSync(out, "utf8"));
+        const out = yield exec.getExecOutput(cmd);
+        return JSON.parse(out.stdout);
     });
 }
 run();
