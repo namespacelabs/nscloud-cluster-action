@@ -14,6 +14,8 @@ inputs:
 outputs:
   registry-address:
     description: "Endpoint address of the registry set up for the Namespace Cloud cluster."
+  instance-id:
+    description: "Identifier of the Namespace Instance hosting the created cluster."
 
 runs:
   using: node16

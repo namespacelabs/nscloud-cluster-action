@@ -29,6 +29,7 @@ async function prepareCluster(): Promise<void> {
 			return await createCluster(registryFile);
 		});
 		core.saveState(ClusterIdKey, cluster.cluster_id);
+		core.setOutput("instance-id", cluster.cluster_id);
 
 		await core.group(`Configure kubectl`, async () => {
 			const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
