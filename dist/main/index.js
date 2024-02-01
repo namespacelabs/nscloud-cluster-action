@@ -4354,10 +4354,10 @@ var main_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arg
 
 function run() {
     return main_awaiter(this, void 0, void 0, function* () {
-        var commandExists = __nccwpck_require__(569);
+        const commandExists = __nccwpck_require__(569);
         commandExists("nsc")
             .then(prepareCluster)
-            .catch(function () {
+            .catch(() => {
             core.setFailed(`Namespace Cloud CLI not found.
 
 Please add a step this step to your workflow's job definition:
@@ -4372,19 +4372,19 @@ function prepareCluster() {
             // Start downloading kubectl while we prepare the cluster.
             const kubectlDir = downloadKubectl();
             const registryFile = tmpFile("registry.txt");
-            const cluster = yield core.group(`Create Namespace Cloud cluster`, () => main_awaiter(this, void 0, void 0, function* () {
+            const cluster = yield core.group("Create Namespace Cloud cluster", () => main_awaiter(this, void 0, void 0, function* () {
                 yield ensureNscloudToken();
                 return yield createCluster(registryFile);
             }));
             core.saveState(ClusterIdKey, cluster.cluster_id);
             core.setOutput("instance-id", cluster.cluster_id);
-            yield core.group(`Configure kubectl`, () => main_awaiter(this, void 0, void 0, function* () {
+            yield core.group("Configure kubectl", () => main_awaiter(this, void 0, void 0, function* () {
                 const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
                 core.exportVariable("KUBECONFIG", kubeConfig);
                 core.addPath(yield kubectlDir);
             }));
             const registry = external_fs_.readFileSync(registryFile, "utf8");
-            yield core.group(`Registry address`, () => main_awaiter(this, void 0, void 0, function* () {
+            yield core.group("Registry address", () => main_awaiter(this, void 0, void 0, function* () {
                 core.info(registry);
                 core.setOutput("registry-address", registry);
             }));
@@ -4421,8 +4421,8 @@ function downloadKubectl() {
 function createCluster(registryFile) {
     return main_awaiter(this, void 0, void 0, function* () {
         let cmd = `nsc cluster create -o json --output_registry_to=${registryFile}`;
-        if (core.getInput("wait-kube-system") == "true") {
-            cmd = cmd + " --wait_kube_system";
+        if (core.getInput("wait-kube-system") === "true") {
+            cmd = `${cmd} --wait_kube_system`;
         }
         const out = yield exec.getExecOutput(cmd);
         return JSON.parse(out.stdout);

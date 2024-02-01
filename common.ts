@@ -19,7 +19,7 @@ export async function ensureNscloudToken() {
 	const tokenFile = "/var/run/nsc/token.json";
 	if (fs.existsSync(tokenFile)) {
 		core.exportVariable("NSC_TOKEN_FILE", tokenFile);
-		return
+		return;
 	}
 
 	// We only need a valid token when opening the proxy

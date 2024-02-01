@@ -4,11 +4,11 @@ import * as exec from "@actions/exec";
 import { ClusterIdKey, ensureNscloudToken, tmpFile } from "./common";
 
 async function run(): Promise<void> {
-	var commandExists = require("command-exists");
+	const commandExists = require("command-exists");
 
 	commandExists("nsc")
 		.then(prepareCluster)
-		.catch(function () {
+		.catch(() => {
 			core.setFailed(`Namespace Cloud CLI not found.
 
 Please add a step this step to your workflow's job definition:
@@ -23,7 +23,7 @@ async function prepareCluster(): Promise<void> {
 		const kubectlDir = downloadKubectl();
 
 		const registryFile = tmpFile("registry.txt");
-		const cluster = await core.group(`Create Namespace Cloud cluster`, async () => {
+		const cluster = await core.group("Create Namespace Cloud cluster", async () => {
 			await ensureNscloudToken();
 
 			return await createCluster(registryFile);
@@ -31,7 +31,7 @@ async function prepareCluster(): Promise<void> {
 		core.saveState(ClusterIdKey, cluster.cluster_id);
 		core.setOutput("instance-id", cluster.cluster_id);
 
-		await core.group(`Configure kubectl`, async () => {
+		await core.group("Configure kubectl", async () => {
 			const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
 			core.exportVariable("KUBECONFIG", kubeConfig);
 
@@ -39,7 +39,7 @@ async function prepareCluster(): Promise<void> {
 		});
 
 		const registry = fs.readFileSync(registryFile, "utf8");
-		await core.group(`Registry address`, async () => {
+		await core.group("Registry address", async () => {
 			core.info(registry);
 			core.setOutput("registry-address", registry);
 		});
@@ -83,8 +83,8 @@ interface Cluster {
 async function createCluster(registryFile: string): Promise<Cluster> {
 	let cmd = `nsc cluster create -o json --output_registry_to=${registryFile}`;
 
-	if (core.getInput("wait-kube-system") == "true") {
-		cmd = cmd + " --wait_kube_system";
+	if (core.getInput("wait-kube-system") === "true") {
+		cmd = `${cmd} --wait_kube_system`;
 	}
 	const out = await exec.getExecOutput(cmd);
 
