@@ -4381,6 +4381,7 @@ function prepareCluster() {
             yield core.group("Configure kubectl", () => main_awaiter(this, void 0, void 0, function* () {
                 const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
                 core.exportVariable("KUBECONFIG", kubeConfig);
+                core.setOutput("kubeconfig", external_fs_.readFileSync(kubeConfig, "utf8"));
                 core.addPath(yield kubectlDir);
             }));
             const registry = external_fs_.readFileSync(registryFile, "utf8");
