@@ -51,7 +51,7 @@ async function prepareCluster(): Promise<void> {
 Successfully created an nscloud cluster.
 \`kubectl\` has been installed and preconfigured.
 
-You can find logs and jump into SSH at ${cluster.app_url}
+You can find logs and jump into SSH at ${cluster.cluster_url}
 Or install \`nsc\` from https://github.com/namespacelabs/foundation/releases/latest
 and follow the cluster logs with \`nsc cluster logs ${cluster.cluster_id} -f\``);
 	} catch (error) {
@@ -78,7 +78,7 @@ async function downloadKubectl() {
 }
 
 interface Cluster {
-	app_url: string;
+	cluster_url: string;
 	cluster_id: string;
 }
 
