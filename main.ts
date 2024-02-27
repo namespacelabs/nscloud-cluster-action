@@ -81,11 +81,25 @@ interface Cluster {
 }
 
 async function createCluster(registryFile: string): Promise<Cluster> {
-	let cmd = `nsc cluster create -o json --output_registry_to=${registryFile}`;
+	const platform = core.getInput("platform");
+	const shape = core.getInput("machine-shape");
+
+	let cmd = `nsc cluster create -o json --machine_type ${platform}:${shape} --output_registry_to=${registryFile}`;
 
 	if (core.getInput("wait-kube-system") === "true") {
 		cmd = `${cmd} --wait_kube_system`;
 	}
+
+	const tag = core.getInput("unique-tag");
+	if (tag != "") {
+		cmd = `${cmd} --unique_tag ${tag}`;
+	}
+
+	const dur = core.getInput("duration");
+	if (dur != "") {
+		cmd = `${cmd} --duration ${dur}`;
+	}
+
 	const out = await exec.getExecOutput(cmd);
 
 	return JSON.parse(out.stdout);

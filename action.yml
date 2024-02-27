@@ -10,6 +10,22 @@ inputs:
     description: "If set to 'true', wait for coredns and local-path-provisioner to be ready."
     required: false
     default: "true"
+  platform:
+    description: "Select the platform to run on. Valid options: linux/amd64,linux/arm64,macos/arm64"
+    required: false
+    default: "linux/amd64"
+  machine-shape:
+    description: "Specify the machine shape as <cpu>x<mem>. E.g. 2x8 starts a 2 vCPU 8GB RAM instance."
+    required: false
+    default: "4x8"
+  duration:
+    description: "If set, specifies how long the cluster should live for. E.g. 10m."
+    required: false
+    default: ""
+  unique-tag:
+    description: "If set, assign a unique tag to the instance. If there is already an instance with this tag, reuse it."
+    required: false
+    default: ""
 
 outputs:
   registry-address:
