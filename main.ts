@@ -35,6 +35,8 @@ async function prepareCluster(): Promise<void> {
 			const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
 			core.exportVariable("KUBECONFIG", kubeConfig);
 
+			core.setOutput("kubeconfig", fs.readFileSync(kubeConfig, "utf8"));
+
 			core.addPath(await kubectlDir);
 		});
 

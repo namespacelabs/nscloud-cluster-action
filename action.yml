@@ -32,6 +32,8 @@ outputs:
     description: "Endpoint address of the registry set up for the Namespace Cloud cluster."
   instance-id:
     description: "Identifier of the Namespace Instance hosting the created cluster."
+  kubeconfig:
+    description: "Plain text version of the kubeconfig used to access the cluster."
 
 runs:
   using: node20
