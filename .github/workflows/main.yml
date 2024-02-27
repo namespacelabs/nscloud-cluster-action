@@ -19,6 +19,10 @@ jobs:
       - uses: namespacelabs/nscloud-setup@v0
       - name: Create Cluster
         uses: ./ # Uses an action in the root directory
+        id: create-cluster
+      - name: Received Kubeconfig
+        run: |
+          echo "${{ steps.create-cluster.outputs.kubeconfig }}"
       - name: Apply configurations
         run: |
           kubectl apply -f testdata/kubernetes/demo.yaml
