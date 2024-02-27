@@ -20,9 +20,9 @@ jobs:
       - name: Create Cluster
         uses: ./ # Uses an action in the root directory
         id: create-cluster
-      - name: Received Kubeconfig
+      - name: Print registry
         run: |
-          echo "${{ steps.create-cluster.outputs.kubeconfig }}"
+          echo "${{ steps.create-cluster.outputs.registry-address }}"
       - name: Apply configurations
         run: |
           kubectl apply -f testdata/kubernetes/demo.yaml
