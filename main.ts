@@ -30,6 +30,7 @@ async function prepareCluster(): Promise<void> {
 		});
 		core.saveState(ClusterIdKey, cluster.cluster_id);
 		core.setOutput("instance-id", cluster.cluster_id);
+		core.setOutput("cluster-url", cluster.cluster_url);
 
 		await core.group("Configure kubectl", async () => {
 			const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
@@ -93,12 +94,12 @@ async function createCluster(registryFile: string): Promise<Cluster> {
 	}
 
 	const tag = core.getInput("unique-tag");
-	if (tag != "") {
+	if (tag !== "") {
 		cmd = `${cmd} --unique_tag ${tag}`;
 	}
 
 	const dur = core.getInput("duration");
-	if (dur != "") {
+	if (dur !== "") {
 		cmd = `${cmd} --duration ${dur}`;
 	}
 

@@ -34,6 +34,8 @@ outputs:
     description: "Identifier of the Namespace Instance hosting the created cluster."
   kubeconfig:
     description: "Plain text version of the kubeconfig used to access the cluster."
+  cluster-url:
+    description: "Namespace App URL to manage and observe the created cluster."
 
 runs:
   using: node20

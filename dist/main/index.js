@@ -4378,6 +4378,7 @@ function prepareCluster() {
             }));
             core.saveState(ClusterIdKey, cluster.cluster_id);
             core.setOutput("instance-id", cluster.cluster_id);
+            core.setOutput("cluster-url", cluster.cluster_url);
             yield core.group("Configure kubectl", () => main_awaiter(this, void 0, void 0, function* () {
                 const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
                 core.exportVariable("KUBECONFIG", kubeConfig);
@@ -4428,11 +4429,11 @@ function createCluster(registryFile) {
             cmd = `${cmd} --wait_kube_system`;
         }
         const tag = core.getInput("unique-tag");
-        if (tag != "") {
+        if (tag !== "") {
             cmd = `${cmd} --unique_tag ${tag}`;
         }
         const dur = core.getInput("duration");
-        if (dur != "") {
+        if (dur !== "") {
             cmd = `${cmd} --duration ${dur}`;
         }
         const out = yield exec.getExecOutput(cmd);
