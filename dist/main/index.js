@@ -4378,7 +4378,7 @@ function prepareCluster() {
             }));
             core.saveState(ClusterIdKey, cluster.cluster_id);
             core.setOutput("instance-id", cluster.cluster_id);
-            core.setOutput("cluster-url", cluster.cluster_url);
+            core.setOutput("instance-url", cluster.cluster_url);
             yield core.group("Configure kubectl", () => main_awaiter(this, void 0, void 0, function* () {
                 const kubeConfig = yield prepareKubeconfig(cluster.cluster_id);
                 core.exportVariable("KUBECONFIG", kubeConfig);

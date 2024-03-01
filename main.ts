@@ -30,7 +30,7 @@ async function prepareCluster(): Promise<void> {
 		});
 		core.saveState(ClusterIdKey, cluster.cluster_id);
 		core.setOutput("instance-id", cluster.cluster_id);
-		core.setOutput("cluster-url", cluster.cluster_url);
+		core.setOutput("instance-url", cluster.cluster_url);
 
 		await core.group("Configure kubectl", async () => {
 			const kubeConfig = await prepareKubeconfig(cluster.cluster_id);
