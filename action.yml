@@ -26,6 +26,10 @@ inputs:
     description: "If set, assign a unique tag to the instance. If there is already an instance with this tag, reuse it."
     required: false
     default: ""
+  ingress:
+    description: "If set, configures the ingress of this instance. Valid options: wildcard."
+    required: false
+    default: ""
 
 outputs:
   registry-address:

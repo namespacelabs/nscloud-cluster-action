@@ -4436,6 +4436,10 @@ function createCluster(registryFile) {
         if (dur !== "") {
             cmd = `${cmd} --duration ${dur}`;
         }
+        const ing = core.getInput("ingress");
+        if (ing !== "") {
+            cmd = `${cmd} --ingress ${ing}`;
+        }
         const out = yield exec.getExecOutput(cmd);
         return JSON.parse(out.stdout);
     });
