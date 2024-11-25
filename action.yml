@@ -30,7 +30,7 @@ inputs:
     description: "If set, configures the ingress of this instance. Valid options: wildcard."
     required: false
     default: ""
-  kube-version:
+  kubernetes-version:
     description: "Which Kubernetes cluster version to deploy in the instance. Valid options: 1.26, 1.27, 1.28, 1.29, 1.30, 1.31"
     required: false
     default: "1.26"

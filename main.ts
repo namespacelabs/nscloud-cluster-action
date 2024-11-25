@@ -86,7 +86,7 @@ interface Cluster {
 async function createCluster(registryFile: string): Promise<Cluster> {
 	const platform = core.getInput("platform");
 	const shape = core.getInput("machine-shape");
-	const kubeVersion = core.getInput("kube-version");
+	const kubeVersion = core.getInput("kubernetes-version");
 
 	let cmd = `nsc cluster create -o json --machine_type ${platform}:${shape} --output_registry_to=${registryFile}`;
 
@@ -130,7 +130,7 @@ async function createCluster(registryFile: string): Promise<Cluster> {
 			break;
 
 		default:
-			throw new Error(`Unsupported kubernetes version: ${kubeVersion}`);
+			throw new Error(`Unsupported Kubernetes version: ${kubeVersion}`);
 	}
 
 	const out = await exec.getExecOutput(cmd);
