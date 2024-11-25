@@ -9,7 +9,7 @@ permissions:
 jobs:
   run_nscloud_action:
     runs-on: nscloud-ubuntu-22.04-amd64-2x8
-    name: Deploy a sample application to Namespace Cloud
+    name: Create a kubernetes cluster
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "${{ steps.create-cluster.outputs.registry-address }}"
 
-      - name: Breakpoint on failure
+      - name: Breakpoint
         if: always()
         uses: namespacelabs/breakpoint-action@v0
         with:
