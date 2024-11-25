@@ -4443,21 +4443,27 @@ function createCluster(registryFile) {
         }
         switch (kubeVersion) {
             case "1.26":
+            case "1.26.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_26`;
                 break;
             case "1.27":
+            case "1.27.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_27`;
                 break;
             case "1.28":
+            case "1.28.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_28`;
                 break;
             case "1.29":
+            case "1.29.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_29`;
                 break;
             case "1.30":
+            case "1.30.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_30`;
                 break;
             case "1.31":
+            case "1.31.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_31`;
                 break;
             default:
