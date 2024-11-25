@@ -4424,6 +4424,7 @@ function createCluster(registryFile) {
     return main_awaiter(this, void 0, void 0, function* () {
         const platform = core.getInput("platform");
         const shape = core.getInput("machine-shape");
+        const kubeVersion = core.getInput("kubernetes-version");
         let cmd = `nsc cluster create -o json --machine_type ${platform}:${shape} --output_registry_to=${registryFile}`;
         if (core.getInput("wait-kube-system") === "true") {
             cmd = `${cmd} --wait_kube_system`;
@@ -4439,6 +4440,28 @@ function createCluster(registryFile) {
         const ing = core.getInput("ingress");
         if (ing !== "") {
             cmd = `${cmd} --ingress ${ing}`;
+        }
+        switch (kubeVersion) {
+            case "1.26":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_26`;
+                break;
+            case "1.27":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_27`;
+                break;
+            case "1.28":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_28`;
+                break;
+            case "1.29":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_29`;
+                break;
+            case "1.30":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_30`;
+                break;
+            case "1.31":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_31`;
+                break;
+            default:
+                throw new Error(`Unsupported Kubernetes version: ${kubeVersion}`);
         }
         const out = yield exec.getExecOutput(cmd);
         return JSON.parse(out.stdout);
