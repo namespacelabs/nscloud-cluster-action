@@ -1,9 +1,9 @@
 name: '"Configure Namespace Cloud" Action For GitHub Actions'
-description: "Configure a Namespace Cloud cluster and expose a preconfigured kubectl to access it"
+description: "Configure a Namespace Instance with a Kubernetes cluster and expose a preconfigured kubectl to access it"
 
 inputs:
   preview:
-    description: "If set to 'true', the cluster created will NOT be destroyed at the end."
+    description: "If set to 'true', the instance created will NOT be destroyed at the end."
     required: false
     default: "false"
   wait-kube-system:
@@ -19,7 +19,7 @@ inputs:
     required: false
     default: "4x8"
   duration:
-    description: "If set, specifies how long the cluster should live for. E.g. 10m."
+    description: "If set, specifies how long the instance should live for. E.g. 10m."
     required: false
     default: ""
   unique-tag:
@@ -30,16 +30,20 @@ inputs:
     description: "If set, configures the ingress of this instance. Valid options: wildcard."
     required: false
     default: ""
+  kubernetes-version:
+    description: "Which Kubernetes cluster version to deploy in the instance. Valid options: 1.26, 1.27, 1.28, 1.29, 1.30, 1.31"
+    required: false
+    default: "1.26"
 
 outputs:
   registry-address:
     description: "Endpoint address of the registry set up for the Namespace Cloud cluster."
   instance-id:
-    description: "Identifier of the Namespace Instance hosting the created cluster."
+    description: "Identifier of the Namespace instance hosting the created cluster."
   instance-url:
-    description: "Namespace App URL to manage and observe the created cluster."
+    description: "Namespace App URL to manage and observe the created instance."
   kubeconfig:
-    description: "Plain text version of the kubeconfig used to access the cluster."
+    description: "Plain text version of the kubeconfig used to access the Kubernetes cluster."
 
 runs:
   using: node20
