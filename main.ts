@@ -141,7 +141,9 @@ async function createCluster(registryFile: string): Promise<Cluster> {
 			break;
 
 		default:
-			throw new Error(`Unsupported Kubernetes version: ${kubeVersion}`);
+			throw new Error(
+				`Unsupported Kubernetes version: ${kubeVersion}. Supported versions are: 1.26, 1.27, 1.28, 1.29, 1.30, 1.31.`
+			);
 	}
 
 	const out = await exec.getExecOutput(cmd);
