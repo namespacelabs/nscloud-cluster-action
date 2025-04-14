@@ -18,7 +18,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: create-cluster
         with:
-          kubernetes-version: "1.30" # Quotation to force the trailing zero.
+          kubernetes-version: 1.32.x
 
       - name: Print registry
         run: |
