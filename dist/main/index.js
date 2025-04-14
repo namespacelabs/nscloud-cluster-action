@@ -4466,8 +4466,12 @@ function createCluster(registryFile) {
             case "1.31.x":
                 cmd = `${cmd} --features EXP_KUBERNETES_1_31`;
                 break;
+            case "1.32":
+            case "1.32.x":
+                cmd = `${cmd} --features EXP_KUBERNETES_1_32`;
+                break;
             default:
-                throw new Error(`Unsupported Kubernetes version: ${kubeVersion}. Supported versions are: 1.26, 1.27, 1.28, 1.29, 1.30, 1.31.`);
+                throw new Error(`Unsupported Kubernetes version: ${kubeVersion}. Supported versions are: 1.26, 1.27, 1.28, 1.29, 1.30, 1.31, 1.32.`);
         }
         const out = yield exec.getExecOutput(cmd);
         return JSON.parse(out.stdout);
