@@ -88,70 +88,41 @@ async function createCluster(registryFile: string): Promise<Cluster> {
 	const shape = core.getInput("machine-shape");
 	const kubeVersion = core.getInput("kubernetes-version");
 
-	let cmd = `nsc cluster create -o json --machine_type ${platform}:${shape} --output_registry_to=${registryFile}`;
+	const cmd = "nsc cluster create";
+	const args = [
+		"-o=json",
+		`--machine_type=${platform}:${shape}`,
+		`--output_registry_to=${registryFile}`,
+	];
 
 	if (core.getInput("wait-kube-system") === "true") {
-		cmd = `${cmd} --wait_kube_system`;
+		args.push("--wait_kube_system");
 	}
 
 	const tag = core.getInput("unique-tag");
 	if (tag !== "") {
-		cmd = `${cmd} --unique_tag ${tag}`;
+		args.push(`--unique_tag=${tag}`);
 	}
 
 	const dur = core.getInput("duration");
 	if (dur !== "") {
-		cmd = `${cmd} --duration ${dur}`;
+		args.push(`--duration=${dur}`);
 	}
 
 	const ing = core.getInput("ingress");
 	if (ing !== "") {
-		cmd = `${cmd} --ingress ${ing}`;
+		args.push(`--ingress=${ing}`);
 	}
 
-	switch (kubeVersion) {
-		case "1.26":
-		case "1.26.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_26`;
-			break;
+	// Transform 1.26.x -> 1.26
+	if (kubeVersion !== "") {
+		const cleanKubeVersion = kubeVersion.replace(/\.x$/, "");
 
-		case "1.27":
-		case "1.27.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_27`;
-			break;
-
-		case "1.28":
-		case "1.28.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_28`;
-			break;
-
-		case "1.29":
-		case "1.29.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_29`;
-			break;
-
-		case "1.30":
-		case "1.30.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_30`;
-			break;
-
-		case "1.31":
-		case "1.31.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_31`;
-			break;
-
-		case "1.32":
-		case "1.32.x":
-			cmd = `${cmd} --features EXP_KUBERNETES_1_32`;
-			break;
-
-		default:
-			throw new Error(
-				`Unsupported Kubernetes version: ${kubeVersion}. Supported versions are: 1.26, 1.27, 1.28, 1.29, 1.30, 1.31, 1.32.`
-			);
+		// One might expect that the JSON string needs to be wrapped in single quotes, but the exec package handles this for us.
+		args.push(`--experimental={"k3s":{"kubernetes_version":"${cleanKubeVersion}"}}`);
 	}
 
-	const out = await exec.getExecOutput(cmd);
+	const out = await exec.getExecOutput(cmd, args);
 
 	return JSON.parse(out.stdout);
 }
