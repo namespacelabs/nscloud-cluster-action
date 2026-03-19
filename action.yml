@@ -46,6 +46,6 @@ outputs:
     description: "Plain text version of the kubeconfig used to access the Kubernetes cluster."
 
 runs:
-  using: node20
+  using: node24
   main: dist/main/index.js
   post: dist/post/index.js
